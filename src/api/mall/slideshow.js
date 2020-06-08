@@ -54,3 +54,11 @@ export function updateSlideshowStatus(data) {
     data: data
   })
 }
+
+// 修改轮播图生效
+export function slideshowEnable() {
+  return request({
+    url: '/mall/slideshow/enable',
+    method: 'put'
+  })
+}

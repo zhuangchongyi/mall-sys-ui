@@ -27,6 +27,14 @@
           @click="handleAdd"
         >新增</el-button>
       </el-col>
+      <el-col :span="1.5">
+        <el-button
+          v-hasPermi="['mall:slideshow:edit']"
+          type="success"
+          icon="el-icon-success"
+          size="mini"
+          @click="handleEnable"
+        >生效</el-button>
       </el-col>
     </el-row>
 
@@ -119,7 +127,7 @@
 </template>
 
 <script>
-import { listSlideshow, getSlideshow, delSlideshow, addSlideshow, updateSlideshow, updateSlideshowStatus } from '@/api/mall/slideshow'
+import { listSlideshow, getSlideshow, delSlideshow, addSlideshow, updateSlideshow, updateSlideshowStatus, slideshowEnable } from '@/api/mall/slideshow'
 
 export default {
   name: 'Slideshow',
@@ -149,7 +157,7 @@ export default {
       // 查询参数
       queryParams: {
         pageNum: 1,
-        pageSize: 5,
+        pageSize: 10,
         url: undefined,
         status: undefined,
         sort: undefined
@@ -299,7 +307,23 @@ export default {
       }).then(() => {
         this.getList()
         this.msgSuccess(text + '成功')
-      }).catch(function() {})
+      }).catch(function(e) {
+        console.log(e)
+      })
+    },
+    /* 生成缓存*/
+    handleEnable() {
+      this.$confirm('确认是否生效?', '警告', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(function() {
+        return slideshowEnable()
+      }).then(() => {
+        this.msgSuccess('成功')
+      }).catch(function(e) {
+        console.log(e)
+      })
     }
   }
 }
